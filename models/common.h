@@ -187,16 +187,4 @@ gpt_vocab::id gpt_sample_top_k_top_p(
   return logits_id[idx].second;
 }
 
-
-std::string convert_to_utf8(const std::wstring & input) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.to_bytes(input);
-}
-
-
-std::wstring convert_to_wstring(const std::string & input) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.from_bytes(input);
-}
-
 #endif
