@@ -127,12 +127,25 @@ class LLM {
     if (token == EosToken()) {
       return true;
     }
-    // Handle special tokens in Dolly V2.
+    // Handle special tokens in StarChat and Dolly V2.
     if (!vocab_.special_tokens.empty()) {
-      return Detokenize(token) == "### End";
+      const std::string &text = Detokenize(token);
+      return text == "<|end|>" || text == "### End";
     }
     return false;
   }
+
+  virtual gpt_vocab::id EosToken() const {
+    const auto it = vocab_.token_to_id.find("<|endoftext|>");
+    if (it != vocab_.token_to_id.end()) {
+      return it->second;
+    }
+    return 0;
+  }
+
+  virtual int VocabSize() const { return vocab_.id_to_token.size(); }
+
+  int ContextLength() const { return n_ctx_; }
 
   void Reset() {
     logits_.clear();
@@ -150,20 +163,9 @@ class LLM {
 
   virtual bool Load(const std::string &filename, const int context_length,
                     const int gpu_layers) = 0;
+
   virtual bool Eval(const std::vector<gpt_vocab::id> &tokens, const int threads,
                     const int n_past) = 0;
-
-  virtual gpt_vocab::id EosToken() const {
-    const auto it = vocab_.token_to_id.find("<|endoftext|>");
-    if (it != vocab_.token_to_id.end()) {
-      return it->second;
-    }
-    return 0;
-  }
-
-  virtual int VocabSize() const { return vocab_.id_to_token.size(); }
-
-  int ContextLength() const { return n_ctx_; }
 
  private:
   bool initialized_ = false;
@@ -197,6 +199,9 @@ class LLM {
    protected:                                                              \
     bool Load(const std::string &filename, const int context_length,       \
               const int gpu_layers) override {                             \
+      if (context_length > 0) {                                            \
+        model_.hparams.n_ctx = context_length;                             \
+      }                                                                    \
       if (!_name##_model_load(filename, model_, vocab_)) {                 \
         return false;                                                      \
       }                                                                    \

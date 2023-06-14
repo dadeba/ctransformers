@@ -15,17 +15,15 @@ Python bindings for the Transformer models implemented in C/C++ using [GGML](htt
 
 ## Supported Models
 
-| Models             | Model Type  |
-| :----------------- | ----------- |
-| GPT-2              | `gpt2`      |
-| GPT-J, GPT4All-J   | `gptj`      |
-| GPT-NeoX, StableLM | `gpt_neox`  |
-| LLaMA              | `llama`     |
-| MPT                | `mpt`       |
-| Dolly V2           | `dolly-v2`  |
-| StarCoder          | `starcoder` |
-
-More models coming soon.
+| Models              | Model Type  |
+| :------------------ | ----------- |
+| GPT-2               | `gpt2`      |
+| GPT-J, GPT4All-J    | `gptj`      |
+| GPT-NeoX, StableLM  | `gpt_neox`  |
+| LLaMA               | `llama`     |
+| MPT                 | `mpt`       |
+| Dolly V2            | `dolly-v2`  |
+| StarCoder, StarChat | `starcoder` |
 
 ## Installation
 
@@ -169,7 +167,7 @@ llm = AutoModelForCausalLM.from_pretrained('/path/to/ggml-llama.bin', model_type
 | `context_length`     | `int`       | The maximum context length to use.                       | `-1`    |
 | `gpu_layers`         | `int`       | The number of layers to run on GPU.                      | `0`     |
 
-> **Note:** Currently only LLaMA models support the `context_length` and `gpu_layers` parameters.
+> **Note:** Currently only LLaMA and MPT models support the `context_length` parameter and only LLaMA models support the `gpu_layers` parameter.
 
 ### <kbd>class</kbd> `AutoModelForCausalLM`
 
@@ -233,9 +231,21 @@ The config object.
 
 ---
 
+##### <kbd>property</kbd> LLM.context_length
+
+The context length of model.
+
+---
+
 ##### <kbd>property</kbd> LLM.embeddings
 
 The input embeddings.
+
+---
+
+##### <kbd>property</kbd> LLM.eos_token_id
+
+The end-of-sequence token.
 
 ---
 
@@ -254,6 +264,12 @@ The path to the model file.
 ##### <kbd>property</kbd> LLM.model_type
 
 The model type.
+
+---
+
+##### <kbd>property</kbd> LLM.vocab_size
+
+The number of tokens in vocabulary.
 
 ---
 
