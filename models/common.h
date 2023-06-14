@@ -16,9 +16,6 @@
 #include <thread>
 #include <unordered_set>
 #include <vector>
-#include <locale>
-#include <codecvt>
-#include <sstream>
 
 #include "ggml/ggml.h"
 

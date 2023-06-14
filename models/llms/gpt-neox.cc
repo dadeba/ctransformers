@@ -117,7 +117,7 @@ bool gpt_neox_model_load(const std::string &fname, gpt_neox_model &model,
       // Convert token from utf-8
       std::wstring word_multibytes = convert_to_wstring(word);
       word.resize(word_multibytes.size());
-      for (int w = 0; w < word_multibytes.size(); w++) {
+      for (long unsigned int w = 0; w < word_multibytes.size(); w++) {
 	word[w] = uint8_t(word_multibytes[w]);
       }
 
